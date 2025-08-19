@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MenuController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -15,9 +18,20 @@ Route::get('/', function () {
 })->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
-    })->name('dashboard');
+    // Main dashboard
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    
+    // Order management
+    Route::resource('orders', OrderController::class);
+    
+    // Menu management
+    Route::resource('menu', MenuController::class);
+    
+    // Additional restaurant routes can be added here
+    // Route::resource('tables', TableController::class);
+    // Route::resource('inventory', InventoryController::class);
+    // Route::resource('employees', EmployeeController::class);
+    // Route::resource('reports', ReportController::class);
 });
 
 require __DIR__.'/settings.php';
